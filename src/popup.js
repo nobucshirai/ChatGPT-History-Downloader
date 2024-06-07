@@ -1,5 +1,4 @@
 const buttonDownloadMarkdown = document.getElementById("download-markdown");
-const buttonDownloadHTML = document.getElementById("download-html");
 
 async function getCurrentTab() {
   const queryOptions = { active: true, currentWindow: true };
@@ -73,13 +72,15 @@ function downloadMarkdown() {
         }**:<br> ${h(s.querySelector(".whitespace-pre-wrap").innerHTML)}\n\n`));
 
     const o = document.createElement("a");
-    (o.download =
-      (document.querySelector("title")?.innerText ||
-        "Conversation with ChatGPT") + ".md"),
-      (o.href = URL.createObjectURL(new Blob([t]))),
-      (o.style.display = "none"),
-      document.body.appendChild(o),
-      o.click();
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "_");
+    const dateOnly = timestamp.split('T')[0].replace(/-/g, (match, offset) => (offset === 4 ? match : ''));
+    let filename = (document.querySelector("title")?.innerText.replace(/[ .,:;/-]/g, "_") || "Conversation_with_ChatGPT");
+    filename = filename.replace(/_+/g, "_") + "_" + dateOnly + ".md";
+    o.download = filename;
+    o.href = URL.createObjectURL(new Blob([t])),
+    o.style.display = "none",
+    document.body.appendChild(o),
+    o.click();
   })();
 }
 
@@ -127,14 +128,5 @@ buttonDownloadMarkdown.addEventListener("click", async () => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
     function: downloadMarkdown,
-  });
-});
-
-buttonDownloadHTML.addEventListener("click", async () => {
-  const tab = await getCurrentTab();
-
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: downloadHTML,
   });
 });
