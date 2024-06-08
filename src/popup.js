@@ -73,7 +73,7 @@ function downloadMarkdown() {
 
     const o = document.createElement("a");
     const timestamp = new Date().toISOString().replace(/[:.]/g, "_");
-    const dateOnly = timestamp.split('T')[0].replace(/-/g, (match, offset) => (offset === 4 ? match : ''));
+    const dateOnly = timestamp.split('T')[0].replace(/-/g, "_").replace(/_(\d{2})_(\d{2})$/, '_$1$2');
     let filename = (document.querySelector("title")?.innerText.replace(/[ .,:;/-]/g, "_") || "Conversation_with_ChatGPT");
     filename = filename.replace(/_+/g, "_") + "_" + dateOnly + ".md";
     o.download = filename;
