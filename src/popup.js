@@ -57,7 +57,7 @@ function downloadMarkdown() {
       .replace(/&gt;/g, ">")
       .trim();
   }(() => {
-    const e = document.querySelectorAll(".text-base.flex");
+    const e = document.querySelectorAll(".text-base.flex, .markdown.prose.w-full.break-words.dark\\:prose-invert.light");
     // set up the markdown file. Start with the title as the heading
     let t = `# ${
       document.querySelector("title")?.innerText || "Conversation with ChatGPT"
@@ -66,7 +66,7 @@ function downloadMarkdown() {
       s.querySelector(".whitespace-pre-wrap") &&
         ((t += t == "" ? "" : "--------\n"),
         (t += `**${
-          s.querySelector("img")// if there is an image, it is the user, use the alt text as the name
+          s.querySelector("img") // if there is an image, it is the user, use the alt text as the name
             ? s.querySelector("img").alt
             : "ChatGPT" // otherwise it is ChatGPT
         }**:<br> ${h(s.querySelector(".whitespace-pre-wrap").innerHTML)}\n\n`));
@@ -89,7 +89,7 @@ function downloadHTML() {
   const header = document.querySelector("header").innerHTML;
   const model = header.match(/<span>([^<]*)<\/span>/)[1];
   // each group is a message, so we can just download the whole thing... in theory
-  const e = document.querySelectorAll(".group.text-token-text-primary");
+  const e = document.querySelectorAll(".group.text-token-text-primary, .markdown.prose.w-full.break-words.dark\\:prose-invert.light");
   let output = `<h1>${
     document.querySelector("title")?.innerText || "Conversation with ChatGPT"
   }</h1>`;
